@@ -710,7 +710,6 @@ html,body{background:#060c12!important;min-height:100%}
 @media(max-width:540px){.dcc-feed-stage{grid-template-columns:1fr}.dcc-live-feed.github,.dcc-live-feed.vercel{grid-column:1}.dcc-feed-stage .cinema-signal{grid-column:1;height:205px!important;min-height:205px}}
 
 /* Accessibility typography: readable secondary information throughout DCC. */
-.app-shell{--font: max(14px,var(--user-font,14px))}
 .app-shell :is(.muted,.tiny,small,.under,.breadcrumb,.time-zone,.eyebrow,.nav-label,.stat-label,.stat-bottom,.panel-foot,.private-note,.workspace small,.owner small,.deploy-text small,.alert-text small,.site-identity small){font-family:'Manrope',system-ui,sans-serif;line-height:1.55;letter-spacing:normal}
 .app-shell .tiny,.app-shell small,.app-shell .under,.app-shell .panel-foot,.app-shell .breadcrumb,.app-shell .time-zone{font-size:13px!important}
 .app-shell :is(.stat-label,.stat-bottom,.deploy-text p,.alert-text p,.site-identity small,.nav-label,.sidebar nav button){font-size:14px!important}
