@@ -173,3 +173,46 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
  .app-shell :is(.panel,.stat-card,.shortcut,.connection-card,.workspace,.private-note,.detail-stats>div,button,a,input,select,textarea):hover,
  .app-shell :is(button,a):active{transform:none!important;transition:none!important}
 }
+
+
+/* DCC interactive 3D glow — additive, theme-aware */
+:root { --hover-glow-color: var(--cyan, #79e5ce); }
+@media (hover:hover) and (pointer:fine) {
+  :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note) {
+    transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, border-color .28s ease, filter .28s ease;
+    transform-style: preserve-3d;
+    will-change: auto;
+  }
+  :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note):hover {
+    border-color: color-mix(in srgb,var(--hover-glow-color) 46%,transparent);
+    box-shadow: 0 12px 28px #0005, 0 0 0 1px color-mix(in srgb,var(--hover-glow-color) 16%,transparent), 0 0 24px color-mix(in srgb,var(--hover-glow-color) 24%,transparent), inset 0 1px 0 #ffffff17;
+    transform: translateY(-3px) perspective(900px) rotateX(1deg);
+  }
+  :is(button,a,[role="button"],.site-identity,.sites-table tbody tr,.segments button,.shortcut) {
+    transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, color .22s ease, background-color .22s ease, border-color .22s ease, filter .22s ease;
+  }
+  :is(button,a,[role="button"],.site-identity,.segments button):not(:disabled):hover {
+    filter: drop-shadow(0 0 5px color-mix(in srgb,var(--hover-glow-color) 45%,transparent));
+  }
+  :is(.outline-btn,.primary-btn,.danger-btn,.icon-btn,.sidebar nav button,.shortcut,.segments button,[role="button"]):not(:disabled):hover {
+    box-shadow: 0 5px 18px #0004, 0 0 18px color-mix(in srgb,var(--hover-glow-color) 32%,transparent), inset 0 1px 0 #ffffff19;
+    transform: translateY(-2px) scale(1.015);
+  }
+  .sites-table tbody tr:hover {
+    box-shadow: inset 3px 0 0 color-mix(in srgb,var(--hover-glow-color) 60%,transparent), inset 0 0 22px color-mix(in srgb,var(--hover-glow-color) 9%,transparent);
+  }
+  :is(input:not([type="range"]):not([type="checkbox"]),select,textarea):hover {
+    border-color:color-mix(in srgb,var(--hover-glow-color) 42%,transparent);
+    box-shadow:0 0 14px color-mix(in srgb,var(--hover-glow-color) 14%,transparent);
+  }
+  :is(input,select,textarea):focus-visible {
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--hover-glow-color) 16%,transparent),0 0 22px color-mix(in srgb,var(--hover-glow-color) 22%,transparent);
+  }
+  :is(button,a,[role="button"]):disabled {filter:none;transform:none;box-shadow:none}
+  .panel.editing:hover {transform:none}
+  .panel:has(.resize-handle:active):hover {transform:none}
+}
+@media (prefers-reduced-motion:reduce) {
+  :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note,button,a,[role="button"]) {transition-duration:.01ms!important}
+  :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note,button,a,[role="button"]):hover {transform:none!important}
+}
