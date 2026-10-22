@@ -6,7 +6,7 @@ import { clamp, storyContent, storyTimeline } from './story-content';
 
 const preferenceKey = 'dcc:story-hidden:v1';
 
-/** A bounded, scroll-driven canvas. No render loop, media downloads or scroll capture. */
+/** A bounded scroll-driven intro with gentle continuous rotation while visible. */
 export default function ScrollStory() {
   const root = useRef<HTMLElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -47,7 +47,9 @@ export default function ScrollStory() {
       const portrait = width < 600;
       const radius = Math.min(width * (portrait ? .36 : .38), height * .38);
       const cx = width / 2, cy = height / 2;
-      const turn = -.25 + motion * 1.7, tilt = .3 + Math.sin(motion * Math.PI) * .65;
+      const slowSpin = performance.now() * (Math.PI * 2 / 48000); // one relaxed revolution every 48 seconds
+      const turn = -.25 + motion * 1.7 + slowSpin;
+      const tilt = .3 + Math.sin(motion * Math.PI) * .65 + Math.sin(slowSpin * .5) * .075;
       const project = (x: number, y: number, z: number) => {
         const a = x * Math.cos(turn) + z * Math.sin(turn);
         const b = z * Math.cos(turn) - x * Math.sin(turn);
@@ -96,6 +98,8 @@ export default function ScrollStory() {
         ctx.strokeStyle = `rgba(${accent},.2)`; ctx.stroke();
       }
       section.dataset.rendered = 'true';
+      // Render only while the intro is on screen; pause when hidden or dismissed.
+      if (visible && !document.hidden) frame = requestAnimationFrame(render);
     };
     const request = () => { if (!frame && visible && !document.hidden) frame = requestAnimationFrame(render); };
     const resize = () => {
@@ -105,7 +109,7 @@ export default function ScrollStory() {
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0); request();
     };
     palette(); resize();
-    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) request(); }, { rootMargin: '100px' });
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) request(); else { cancelAnimationFrame(frame); frame = 0; } }, { rootMargin: '100px' });
     observer.observe(section);
     const sizeObserver = new ResizeObserver(resize); sizeObserver.observe(surface);
     const themeObserver = new MutationObserver(() => { palette(); request(); });
