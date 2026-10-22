@@ -768,3 +768,13 @@ html,body{background:#060c12!important;min-height:100%}
 .cinema-signal.has-update .cinema-ring{border-color:rgba(var(--accent-rgb),1)!important;box-shadow:0 0 35px rgba(var(--accent-rgb),1),inset 0 0 28px rgba(var(--accent-rgb),.75)!important}
 .cinema-signal.has-update .cinema-center::after{content:'';position:absolute;inset:-22%;border-radius:50%;pointer-events:none;border:2px solid rgba(var(--accent-rgb),.8);box-shadow:0 0 52px 15px rgba(var(--accent-rgb),.6);animation:dcc-urgent-halo 1.35s steps(1,end) infinite}
 @media(prefers-reduced-motion:reduce){.cinema-signal.has-update .cinema-center,.cinema-signal.has-update .cinema-center::after{animation:none!important}.cinema-signal.has-update .cinema-center::after{opacity:.65;transform:none}}
+
+/* Only newly detected events appear in the side feeds (at most 2 per provider). */
+.dcc-live-feed{font-size:13px;padding:15px;overflow-y:auto}
+.dcc-live-head{font-size:13px;line-height:1.45}
+.dcc-live-head span{font-size:10px}
+.dcc-live-rowtop strong{font-size:13px;line-height:1.5}
+.dcc-live-rowtop>span,.dcc-live-foot{font-size:11px}
+.dcc-live-row p{font-size:12px;line-height:1.55}
+.dcc-live-foot code{font-size:11px}
+.dcc-live-feed .badge{font-size:11px}
