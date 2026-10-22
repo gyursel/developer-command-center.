@@ -563,3 +563,96 @@ html,body{background:#060c12!important;min-height:100%}
  .cinema-story{bottom:17px;left:13px;font-size:8px;gap:7px}.cinema-story i{width:9px}
 }
 @media(prefers-reduced-motion:reduce){.cinema-signal *{animation:none!important;transition:none!important}}
+
+/* Visual quality pass 2026-10-22 — fix overlap, visual rhythm and readability. */
+.app-shell .page-heading{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) auto;
+ align-items:center;column-gap:clamp(18px,3vw,44px);
+ min-height:146px;
+ padding:clamp(20px,2.2vw,30px)!important;
+ overflow:hidden;
+}
+.app-shell .page-heading .heading-copy{
+ min-width:0;max-width:660px;position:relative;z-index:3;
+ display:flex;flex-direction:column;align-items:flex-start;
+}
+.app-shell .page-heading .eyebrow{
+ display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+ max-width:100%;font-size:10px;line-height:1.5;
+ margin:0 0 12px!important;letter-spacing:.15em;
+}
+.app-shell .page-heading .hero-edition{
+ display:inline-block!important;position:static!important;
+ margin:0 0 0 4px!important;white-space:nowrap;
+ font-size:9px!important;line-height:1.5;letter-spacing:.12em;
+ vertical-align:baseline;transform:none!important;
+}
+.app-shell .page-heading h1{
+ position:relative;z-index:2;margin:0!important;
+ max-width:100%;font-size:clamp(27px,3vw,43px)!important;
+ line-height:1.18!important;letter-spacing:-.035em!important;
+ overflow-wrap:normal;text-wrap:balance;
+}
+.app-shell .page-heading p{position:relative;z-index:2;margin-top:12px!important}
+.app-shell .page-heading .heading-actions{
+ display:flex;justify-content:flex-end;align-items:center;
+ width:auto!important;max-width:none;flex-wrap:wrap;
+ margin:0;gap:10px;position:relative;z-index:4;
+}
+.app-shell .page-heading .heading-actions button{white-space:nowrap;min-height:42px}
+.app-shell .page-heading .command-orbit{opacity:.14!important;right:21%;z-index:0!important}
+.tech-background .tech-shade{
+ background:linear-gradient(90deg,rgba(4,13,24,.40),rgba(4,13,24,.31)),linear-gradient(0deg,rgba(4,13,24,.32),rgba(4,13,24,.15))!important;
+}
+.tech-background video{filter:brightness(.78) saturate(.83)!important;opacity:.73!important}
+.app-shell :is(.panel,.stat-card){
+ background:linear-gradient(145deg,rgba(9,22,34,.88),rgba(11,25,38,.84))!important;
+ border-color:rgba(var(--accent-rgb),.19)!important;
+}
+.app-shell .health-strip{background:rgba(8,21,32,.85)!important}
+.app-shell .page-heading{
+ background:linear-gradient(116deg,rgba(8,21,34,.91),rgba(11,27,40,.84))!important;
+}
+.cinema-signal{
+ height:clamp(205px,23vw,282px)!important;
+ margin-bottom:16px!important;
+ background:radial-gradient(ellipse at 50% 45%,rgba(var(--accent-rgb),.10),transparent 56%),linear-gradient(135deg,rgba(4,17,30,.95),rgba(10,27,41,.9))!important;
+}
+.cinema-grid{opacity:.57}
+.cinema-trace{opacity:.42}
+.cinema-scanline{opacity:.34}
+.app-shell .stats-grid{margin-bottom:20px}
+.app-shell .stat-card{min-width:0}
+.app-shell .stat-label{line-height:1.45}
+.app-shell .panel-title h2{line-height:1.4}
+.app-shell .table-scroll{max-width:100%}
+@media(max-width:1150px){
+ .app-shell .page-heading{grid-template-columns:minmax(0,1fr)!important;gap:17px!important}
+ .app-shell .page-heading .heading-actions{justify-content:flex-start!important}
+ .app-shell .page-heading .command-orbit{right:-20px;opacity:.12!important}
+}
+@media(max-width:760px){
+ .app-shell .page-heading{display:flex!important;flex-direction:column!important;align-items:stretch!important;min-height:0!important;padding:18px 15px!important;gap:15px!important}
+ .app-shell .page-heading .eyebrow{font-size:9px;gap:6px;margin-bottom:9px!important}
+ .app-shell .page-heading .hero-edition{font-size:8px!important;margin-left:0!important}
+ .app-shell .page-heading h1{font-size:clamp(24px,6.4vw,34px)!important;line-height:1.2!important}
+ .app-shell .page-heading p{margin-top:9px!important}
+ .app-shell .page-heading .heading-actions{width:100%!important;justify-content:stretch!important;gap:8px}
+ .app-shell .page-heading .heading-actions button{min-width:0;flex:1;white-space:normal;min-height:44px}
+ .cinema-signal{height:clamp(220px,59vw,315px)!important;margin-bottom:12px!important}
+ .cinema-center{transform:translate(-50%,-50%) scale(.9)}
+ .app-shell .stats-grid{margin-bottom:14px}
+ .app-shell .stat-card{padding:14px 11px}
+ .app-shell .page-heading .command-orbit{opacity:.09!important}
+}
+@media(max-width:390px){
+ .app-shell .page-heading{padding:15px 12px!important}
+ .app-shell .page-heading .heading-actions{flex-wrap:wrap}
+ .app-shell .page-heading .heading-actions button{flex-basis:100%;min-width:0}
+ .cinema-signal{height:220px!important}
+ .cinema-coordinate{font-size:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ .cinema-signal *{animation:none!important;transition:none!important}
+}
