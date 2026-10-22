@@ -743,3 +743,19 @@ html,body{background:#060c12!important;min-height:100%}
 .app-shell .page-heading .heading-actions .primary-btn:focus-visible{
  box-shadow:0 0 0 2px rgba(var(--accent-rgb),.23),inset 0 1px 0 rgba(255,255,255,.23)!important;
 }
+
+/* Hero: a truly neutral, contained surface without orange ambient lighting. */
+.app-shell .page-heading{
+ isolation:isolate!important;
+ background:rgba(7,18,29,var(--panel-alpha,.82))!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+.app-shell .page-heading::before{content:none!important;display:none!important}
+.app-shell .page-heading .command-orbit{display:none!important}
+.app-shell .page-heading .heading-actions .primary-btn,
+.app-shell .page-heading .heading-actions .primary-btn:hover,
+.app-shell .page-heading .heading-actions .primary-btn:focus-visible{
+ filter:none!important;text-shadow:none!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2)!important;
+}
+.app-shell .page-heading .heading-actions{filter:none!important}
