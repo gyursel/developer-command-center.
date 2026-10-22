@@ -68,16 +68,14 @@ export default function Dashboard(){
  <main id="dashboard-main">{tab==='overview'&&<ScrollStory/>}<div id="workspace-panels" tabIndex={-1} className="page-heading"><div className="heading-copy"><div className="eyebrow"><span/>DEVELOPER COMMAND CENTER</div><h1>{tab==='overview'?'Всичко под контрол.':titles[tab]}</h1><p>{tab==='overview'?'Сайтове, deployments и сигнали. Едно място, пълна картина.':tab==='websites'?'Реална достъпност. Измерена от сървъра.':tab==='deployments'?'Последният deployment и активната production версия.':tab==='alerts'?'История на инцидентите, без дублиране и шум.':'Твоите инструменти. Винаги наблизо.'}</p></div><div className="command-orbit" aria-hidden="true"><span className="orbit-ring orbit-one"/><span className="orbit-ring orbit-two"/><span className="orbit-core"><Command size={36}/></span><i className="orbit-node"/></div><div className="heading-actions"><button className={'outline-btn '+(editing?'enabled':'')} onClick={()=>setEditing(!editing)}><SlidersHorizontal size={15}/>{editing?'Готово':'Редактиране'}</button><button className="primary-btn" disabled={busy||!data} onClick={()=>collect()}><RefreshCw size={15} className={busy?'spin':''}/>{busy?'Проверяване…':'Провери сега'}</button></div></div>
  {tab==='overview'&&<div className="dcc-feed-stage">
  <CinematicSignal attention={now<flashUntil}/>
- <div className="dcc-live-feed github" aria-label="Нови GitHub commits">
+ {visibleActivity.some((d:any)=>d.kind==='github')&&<div className="dcc-live-feed github" aria-label="Нови GitHub commits">
  <div className="dcc-live-head"><GitBranch size={17}/><strong>GITHUB</strong><span>НОВО</span></div>
  {visibleActivity.filter((d:any)=>d.kind==='github').slice(0,2).map((d:any)=><div className="dcc-live-row" key={'gh-'+d.id}><div className="dcc-live-rowtop"><strong>{d.name}</strong><span>ново</span></div><p>{d.message||'Нов commit'}</p><div className="dcc-live-foot"><code>{d.sha||'—'}</code>{d.url&&link(d.url,<ExternalLink size={16}/>,'dcc-live-link')}</div></div>)}
- {!visibleActivity.some((d:any)=>d.kind==='github')&&<p className="dcc-live-empty">Няма нови commits</p>}
- </div>
- <div className="dcc-live-feed vercel" aria-label="Нови Vercel deployments">
+ </div>}
+ {visibleActivity.some((d:any)=>d.kind==='vercel')&&<div className="dcc-live-feed vercel" aria-label="Нови Vercel deployments">
  <div className="dcc-live-head"><Layers size={17}/><strong>VERCEL</strong><span>НОВО</span></div>
  {visibleActivity.filter((d:any)=>d.kind==='vercel').slice(0,2).map((d:any)=><div className="dcc-live-row" key={'vc-'+d.id}><div className="dcc-live-rowtop"><strong>{d.name}</strong><Badge status={d.status}/></div><p>{d.environment||'preview'} · {d.branch||'—'}</p><div className="dcc-live-foot"><span>ново</span>{d.url&&link(d.url,<ExternalLink size={16}/>,'dcc-live-link')}</div></div>)}
- {!visibleActivity.some((d:any)=>d.kind==='vercel')&&<p className="dcc-live-empty">Няма нови deployments</p>}
- </div>
+ </div>}
  </div>}
  <div className="health-strip"><div><i className={'dot '+(!last?'neutral':stale||offline?'warn':'good')}/><strong>{!last?'Очаква първа проверка':stale?'Данните са остарели':offline?'Има недостъпни сайтове':'Мониторингът е актуален'}</strong><span className="health-separator"/><span>Реални данни · без симулация</span></div><span className="mono">Последна проверка: {fmt(last,true)}</span></div>
  {error&&<div role="alert" className="error-banner"><AlertTriangle size={16}/>{error}{authRequired?<a className="outline-btn" href="/login" target="_top">Влез отново</a>:<button onClick={load}>Опитай отново</button>}</div>}
