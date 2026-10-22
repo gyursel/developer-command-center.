@@ -10,6 +10,7 @@ export default {
   const url=new URL(req.url);const path=url.pathname;
   if(!env.APP_ORIGIN||!env.OWNER_PASSWORD_HASH||!env.DB)return new Response('Configure APP_ORIGIN, OWNER_PASSWORD_HASH and DB.',{status:503});
   if(url.origin!==env.APP_ORIGIN)return new Response('Invalid origin',{status:403});
+  let stage='initial';
   try{
    if(path==='/login'){
     if(req.method==='GET')return secure(new Response(loginPage(),{headers:{'Content-Type':'text/html; charset=utf-8'}}));
@@ -22,6 +23,7 @@ export default {
     if(!valid||data.get('username')!==env.OWNER_USERNAME)return secure(new Response(loginPage(true),{status:401,headers:{'Content-Type':'text/html; charset=utf-8'}}));
     return secure(new Response(null,{status:303,headers:{Location:'/', 'Set-Cookie':cookie(await createSession())}}));
    }
+   stage='authentication';
    if(!await authenticated(req.headers.get('cookie')||''))return secure(path.startsWith('/api/')?Response.json({error:'Unauthorized'},{status:401}):new Response(null,{status:303,headers:{Location:'/login'}}));
    if(!['GET','HEAD','OPTIONS'].includes(req.method)&&!sameOrigin(req))return new Response(null,{status:403});
    if(path==='/logout'){
@@ -29,12 +31,20 @@ export default {
    }
    // Serve frequent dashboard data directly: skip Next/Vinext SSR for this JSON endpoint.
    if(path==='/api/state'&&req.method==='GET'){
+    stage='state-snapshot';
     const state=await snapshot();
+    stage='state-sanitize';
     state.integrations=publicIntegrations(state.integrations);
+    stage='state-serialize';
     return secure(Response.json(state));
    }
+   stage='page-render';
    return secure(await handler.fetch(req,env,ctx));
-  }catch{return secure(Response.json({error:'Временна сървърна грешка.'},{status:503}));}
+  }catch(error){
+   // Never log cookies, authorization headers, URLs with query strings or credentials.
+   console.error('DCC_WORKER_FAILURE',JSON.stringify({stage,path,errorType:error instanceof Error?error.name:typeof error}));
+   return secure(Response.json({error:'Временна сървърна грешка.',stage},{status:503}));
+  }
  },
  async scheduled(_controller:ScheduledController,env:Cloudflare.Env,_ctx:ExecutionContext){
   await collect();await put('scheduler',{enabled:true,intervalMinutes:1,lastRun:Date.now(),provider:'Cloudflare Cron'});
