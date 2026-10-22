@@ -13,7 +13,7 @@ export async function incident(key:string, active:boolean,level='Notice',title='
  else await db().prepare('INSERT OR IGNORE INTO incidents(id,key,opened,seen,level,title,detail) VALUES(?,?,?,?,?,?,?)').bind(crypto.randomUUID(),key,now,now,level,title,detail).run();
 }
 export async function snapshot(){
- await seed();
+ // Read-only: seeding and incident reconciliation belong to the scheduled collector.
  const sites=await get('sites',initialSites), settings=await get('settings',initialSettings);
  const summaries=await db().prepare("SELECT site_id,count(*) as samples,min(at) as start,sum(CASE WHEN json_extract(value,'$.status') IN ('Online','Warning') THEN 1 ELSE 0 END) as available,sum(CASE WHEN json_extract(value,'$.status') != 'Unknown' THEN 1 ELSE 0 END) as measured FROM checks GROUP BY site_id").all<any>();
  const stats=new Map(summaries.results.map((r:any)=>[r.site_id,r]));
@@ -22,7 +22,7 @@ export async function snapshot(){
  const integrations=await get('integrations',{});
  // Staleness is evaluated independently of collection; a stalled collector cannot hide it.
  const last=await get('lastCollection',0);
- await incident('collector:stale',!!last&&Date.now()-last>150*60000,'Warning','Мониторингът е остарял','Няма завършена проверка повече от 150 минути.');
+ // Never write incidents during a frequent dashboard poll.
  const alerts=await db().prepare("SELECT incidents.*, CASE WHEN records.key IS NULL THEN 0 ELSE 1 END AS dismissed FROM incidents LEFT JOIN records ON records.key = 'dismissed:' || incidents.id ORDER BY incidents.opened DESC LIMIT 500").all();
  return {sites:sites.map((s:any)=>{const history=by.get(s.id)||[],st:any=stats.get(s.id);return {...s,latest:history[0]||null,history:[...history].reverse(),samples:st?.samples||0,periodStart:st?.start||null,uptime:st?.measured?Math.round(st.available/st.measured*10000)/100:null};}),settings,links:await get('links',initialLinks),alerts:alerts.results,integrations,lastCollection:last,scheduler:await get('scheduler',{enabled:false,intervalMinutes:60}),credentials:await credentialFlags(),serverTime:Date.now()};
 }
