@@ -261,45 +261,27 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
 
 
 
-/* Keep meaningful status and key symbols vivid regardless of text-opacity setting. */
-.app-shell{
- --electric-online:#26ffc6;
- --electric-offline:#ff527c;
- --electric-warning:#ffcb4c;
- --electric-symbol:#54eaff;
-}
-.app-shell :is(.good,.badge.good,.stat-status.good,.dot.good){
- color:var(--electric-online)!important;
- -webkit-text-fill-color:var(--electric-online)!important;
- text-shadow:0 0 7px #26ffc699,0 0 17px #26ffc65c;
-}
-.app-shell :is(.bad,.badge.bad,.stat-status.bad,.dot.bad){
- color:var(--electric-offline)!important;
- -webkit-text-fill-color:var(--electric-offline)!important;
- text-shadow:0 0 7px #ff527c99,0 0 17px #ff527c5c;
-}
-.app-shell :is(.warn,.badge.warn,.stat-status.warn,.dot.warn){
- color:var(--electric-warning)!important;
- -webkit-text-fill-color:var(--electric-warning)!important;
- text-shadow:0 0 7px #ffcb4c88,0 0 14px #ffcb4c4d;
-}
-.app-shell :is(.badge.good,.badge.bad,.badge.warn,.stat-status.good,.stat-status.bad,.stat-status.warn){
- opacity:1!important;
- font-weight:700;
- filter:drop-shadow(0 0 5px currentColor);
-}
-.app-shell :is(.badge,.stat-status) i,
-.app-shell :is(.good,.bad,.warn) > .dot,
-.app-shell .dot.good,.app-shell .dot.bad,.app-shell .dot.warn{
- opacity:1!important;
- box-shadow:0 0 5px currentColor,0 0 12px currentColor;
-}
-.app-shell :is(.nav-active-dot,.brand-dot,.section-mark,.section-title svg,.panel-icon svg,.stat-label svg,.health-strip svg,.clear-icon svg,.shortcut-icon svg){
- color:var(--electric-symbol)!important;
- -webkit-text-fill-color:var(--electric-symbol)!important;
- opacity:1!important;
- filter:drop-shadow(0 0 5px #54eaff8c);
-}
-.app-shell :is(.good,.bad,.warn,.badge.good,.badge.bad,.badge.warn,.stat-status.good,.stat-status.bad,.stat-status.warn) :is(span,strong,small,i){
- -webkit-text-fill-color:inherit!important;
-}
+
+
+/* Refined status accents and full-viewport visible video background */
+html,body{background:#060c12!important;min-height:100%}
+.tech-background{position:fixed!important;inset:0!important;z-index:0!important;overflow:hidden;pointer-events:none;background:#060c12}
+.tech-background video{position:absolute;width:100%;height:100%;inset:0;object-fit:cover;opacity:.94}
+.tech-background .tech-shade{background:linear-gradient(90deg,rgba(4,10,17,.24),rgba(4,10,17,.10)),linear-gradient(0deg,rgba(4,10,17,.22),transparent 75%)}
+.app-shell{position:relative;z-index:1;background:transparent!important}
+.app-shell .main-shell{background:transparent!important}
+.app-shell .sidebar{background:rgba(8,15,23,.52)!important;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.app-shell .topbar{background:rgba(9,17,25,.36)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.app-shell :is(.panel,.stat-card){background:rgba(11,19,29,.49)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 9px 28px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.04)}
+.app-shell :is(.health-strip,.workspace,.shortcut,.private-note,.search){background:rgba(10,20,30,.36)!important;backdrop-filter:blur(9px)}
+.app-shell .panel-head{background:transparent!important}
+.app-shell .segments{background:rgba(8,15,24,.38)}
+/* Neon colors without blurry text halos */
+.app-shell :is(.good,.badge.good,.stat-status.good){color:#67f4cf!important;-webkit-text-fill-color:#67f4cf!important;text-shadow:0 0 5px rgba(103,244,207,.18)!important}
+.app-shell :is(.bad,.badge.bad,.stat-status.bad){color:#ff8698!important;-webkit-text-fill-color:#ff8698!important;text-shadow:0 0 5px rgba(255,134,152,.16)!important}
+.app-shell :is(.warn,.badge.warn,.stat-status.warn){color:#ffcf81!important;-webkit-text-fill-color:#ffcf81!important;text-shadow:0 0 5px rgba(255,207,129,.15)!important}
+.app-shell :is(.badge.good,.badge.bad,.badge.warn,.stat-status.good,.stat-status.bad,.stat-status.warn){filter:none!important;opacity:1!important;font-weight:650}
+.app-shell :is(.badge,.stat-status) i,.app-shell :is(.dot.good,.dot.bad,.dot.warn){opacity:1!important;box-shadow:0 0 4px currentColor!important}
+.app-shell :is(.nav-active-dot,.section-mark,.panel-icon svg,.stat-label svg,.shortcut-icon svg){opacity:1!important;filter:none!important;color:var(--accent,#79e5ce)!important;-webkit-text-fill-color:var(--accent,#79e5ce)!important}
+.app-shell :is(.good,.bad,.warn,.badge.good,.badge.bad,.badge.warn) :is(span,strong,small,i){-webkit-text-fill-color:inherit!important}
+@media(max-width:760px){.app-shell .sidebar{background:rgba(8,15,23,.78)!important}.app-shell :is(.panel,.stat-card){background:rgba(11,19,29,.58)!important}}
