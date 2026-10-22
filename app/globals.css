@@ -231,3 +231,12 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
  .app-shell .brand-logo-only:hover{transform:none!important}
 }
 @media(prefers-reduced-motion:reduce){.animated-logo,.animated-logo-glow{animation:none!important}}
+
+/* Crisp neon logo: strong solid core, restrained halo, never fade the mark */
+.sidebar .brand-logo-only{min-height:154px;padding:10px 4px 10px}
+.sidebar .animated-logo-shell{width:204px;height:128px}
+.sidebar .animated-logo{width:190px;height:112px;max-width:none;max-height:none;opacity:1!important;filter:none!important;animation:dccLogoSharpPulse 3.8s ease-in-out infinite!important;transform:none!important}
+.sidebar .animated-logo-glow{inset:34px 35px;filter:blur(10px);opacity:.4;animation:dccLogoSoftHalo 3.8s ease-in-out infinite}
+@keyframes dccLogoSharpPulse{0%,100%{filter:drop-shadow(0 0 2px #3deeff)!important}50%{filter:drop-shadow(0 0 7px #3deeff)!important}}
+@keyframes dccLogoSoftHalo{0%,100%{opacity:.22;scale:.95}50%{opacity:.48;scale:1.04}}
+@media(prefers-reduced-motion:reduce){.sidebar .animated-logo,.sidebar .animated-logo-glow{animation:none!important}}
