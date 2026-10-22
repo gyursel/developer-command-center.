@@ -384,3 +384,23 @@ html,body{background:#060c12!important;min-height:100%}
 @media(prefers-reduced-motion:reduce){
  .app-shell :is(.sidebar nav button,.shortcut,.outline-btn,.primary-btn,.icon-btn,.stat-card){transition:none!important}
 }
+
+
+/* Mobile navigation: persistent top-level header, accessible drawer and safe areas. */
+.dcc-mobile-header,.dcc-mobile-close{display:none}
+@media(max-width:760px){
+ .app-shell{padding-top:calc(60px + env(safe-area-inset-top))!important}
+ .dcc-mobile-header{display:flex;position:fixed;z-index:100;top:0;left:0;right:0;height:calc(60px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 14px 0;align-items:center;justify-content:space-between;gap:12px;background:rgba(9,21,32,.83);border-bottom:1px solid rgba(var(--accent-rgb),.30);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+ .dcc-mobile-brand{display:inline-flex;align-items:center;gap:9px;min-width:0;min-height:44px;text-decoration:none;color:#d7faff!important;-webkit-text-fill-color:#d7faff!important;font-family:Orbitron,sans-serif;font-size:clamp(10px,3.15vw,13px);font-weight:700;letter-spacing:.07em}
+ .dcc-mobile-brand svg{color:var(--accent,#68eada);flex:none;filter:drop-shadow(0 0 3px rgba(var(--accent-rgb),.3))}
+ .dcc-mobile-toggle,.dcc-mobile-close{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:44px;min-height:44px;border:1px solid rgba(var(--accent-rgb),.28);border-radius:11px;background:rgba(16,35,46,.74);color:#e8fbff;-webkit-text-fill-color:#e8fbff;cursor:pointer}
+ .dcc-mobile-close{width:100%;justify-content:flex-start;margin:0 0 14px;padding:0 12px}
+ .app-shell .sidebar{z-index:111!important;top:0!important;bottom:0!important;height:100dvh!important;overflow-y:auto;padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:env(safe-area-inset-bottom)!important;overscroll-behavior:contain}
+ .app-shell .backdrop{z-index:109!important}
+ .app-shell .main-shell{position:relative;z-index:1}
+ .app-shell .topbar{position:relative!important;top:auto!important;z-index:1!important}
+ .app-shell :is(main,[id]){scroll-margin-top:calc(76px + env(safe-area-inset-top))}
+ .app-shell .sidebar nav button{min-height:48px}
+ .dcc-mobile-header :is(button,a):focus-visible,.dcc-mobile-close:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+}
+@media(min-width:761px){.dcc-mobile-header,.dcc-mobile-close{display:none!important}}
