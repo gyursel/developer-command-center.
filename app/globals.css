@@ -258,3 +258,73 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
   50% {opacity:calc(var(--logo-glow, .35) * var(--logo-opacity, 1) * .75);scale:1.04}
 }
 @media(prefers-reduced-motion:reduce){.sidebar .animated-logo,.sidebar .animated-logo-glow{animation:none!important}}
+
+
+/* Electric Xtra-inspired dashboard visual system.
+   Visual adaptation of TemplateMo 596 Electric Xtra (templatemo.com/tm-596-electric-xtra).
+   Existing dashboard structure, functionality, custom themes and logo controls retained. */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+:root{--electric-orange:#ff5e00;--electric-blue:#00b2ff}
+body{background:#07090f}
+.app-shell{
+  background:
+    radial-gradient(ellipse at 16% 12%,rgba(255,94,0,.075),transparent 43%),
+    radial-gradient(ellipse at 88% 31%,rgba(0,178,255,.095),transparent 52%),
+    #080b12;
+  isolation:isolate;
+  position:relative;
+}
+.app-shell::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(var(--accent-rgb),.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--accent-rgb),.075) 1px,transparent 1px);
+  background-size:64px 64px;
+  opacity:.38;
+  animation:dccElectricGrid 32s linear infinite;
+  mask-image:linear-gradient(105deg,transparent 1%,#000 40%,#000 90%);
+}
+.app-shell::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 5px,rgba(0,0,0,.16) 6px);
+  opacity:.28;
+}
+.app-shell .sidebar,.app-shell .main-shell{position:relative;z-index:1}
+.app-shell .sidebar{position:fixed;background:linear-gradient(165deg,rgba(12,15,26,.96),rgba(7,11,18,.97));border-right:1px solid rgba(var(--accent-rgb),.28);box-shadow:6px 0 42px #0007,inset -1px 0 0 rgba(255,94,0,.1)}
+.app-shell .topbar{background:rgba(8,13,24,.86);border-bottom:1px solid rgba(var(--accent-rgb),.22);backdrop-filter:blur(18px)}
+.app-shell .panel,.app-shell .stat-card{
+ background:linear-gradient(137deg,rgba(20,26,39,var(--panel-opacity,.88)),rgba(9,14,25,var(--panel-opacity,.88)));
+ border:1px solid rgba(var(--accent-rgb),.23);
+ border-radius:12px;
+ box-shadow:0 15px 45px #0003,0 0 22px rgba(var(--accent-rgb),.055),inset 0 1px 0 #ffffff0b;
+ backdrop-filter:blur(14px);
+}
+.app-shell .panel::before,.app-shell .stat-card::before{
+ content:"";position:absolute;top:0;left:15px;right:15px;height:1px;
+ background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.65),transparent);
+ opacity:.67;pointer-events:none;
+}
+.app-shell .panel-head{background:linear-gradient(90deg,rgba(var(--accent-rgb),.055),transparent 70%)}
+.app-shell :is(h1,h2,h3,.section-title,.nav-label,.eyebrow){
+ font-family:'Orbitron','Rajdhani',sans-serif;
+}
+.app-shell h1{letter-spacing:.018em;text-shadow:0 0 24px rgba(var(--accent-rgb),.24)}
+.app-shell :is(.panel,.stat-card,.shortcut,.outline-btn,.primary-btn,.sidebar nav button,.segments button):hover{
+ border-color:rgba(var(--accent-rgb),.57);
+ box-shadow:0 0 20px rgba(var(--accent-rgb),.16),inset 0 0 13px rgba(var(--accent-rgb),.04),0 10px 28px #0004;
+ transform:none!important;
+}
+.app-shell .sidebar nav button.active{
+ background:linear-gradient(90deg,rgba(var(--accent-rgb),.21),rgba(var(--accent-rgb),.035));
+ border-color:rgba(var(--accent-rgb),.46);
+ box-shadow:inset 3px 0 0 var(--accent),0 0 17px rgba(var(--accent-rgb),.11);
+}
+.app-shell .shortcut{background:linear-gradient(155deg,rgba(var(--accent-rgb),.07),rgba(8,12,21,.85));border-color:rgba(var(--accent-rgb),.20)}
+.app-shell .primary-btn{background:linear-gradient(110deg,var(--accent),color-mix(in srgb,var(--accent) 68%,#fff));border-color:var(--accent);box-shadow:0 0 20px rgba(var(--accent-rgb),.17)}
+.app-shell :is(input,select,textarea,.search){background-color:rgba(6,11,21,.77);border-color:rgba(var(--accent-rgb),.20)}
+.app-shell .badge.good{background:rgba(0,209,160,.085)}
+.app-shell .health-strip{background:linear-gradient(90deg,rgba(var(--accent-rgb),.085),rgba(255,94,0,.035));border-color:rgba(var(--accent-rgb),.23)}
+.app-shell .modal{border:1px solid rgba(var(--accent-rgb),.33);box-shadow:0 25px 90px #000b,0 0 35px rgba(var(--accent-rgb),.11)}
+@keyframes dccElectricGrid{from{background-position:0 0,0 0}to{background-position:64px 64px,64px 64px}}
+@media(max-width:800px){.app-shell::before{background-size:48px 48px;animation:none;opacity:.2}}
+@media(prefers-reduced-motion:reduce){.app-shell::before{animation:none}}
