@@ -686,3 +686,25 @@ html,body{background:#060c12!important;min-height:100%}
 .diagnostic-log-row:nth-child(even){background:#ffffff06}
 .diagnostic-log-row span{overflow-wrap:anywhere}
 @media(max-width:760px){.diagnostic-panel{padding:15px 12px}.diagnostic-log-row{gap:8px;padding:10px}}
+
+/* DCC live feed modules */
+.app-shell :is(.panel,.stat-card){background:rgba(9,22,34,var(--panel-alpha,.78))!important;backdrop-filter:blur(13px)}
+.app-shell .health-strip,.app-shell .shortcut{background:rgba(8,21,32,var(--panel-alpha-soft,.65))!important}
+.app-shell .page-heading{background:rgba(8,21,34,var(--panel-alpha,.78))!important}
+.dcc-feed-stage{position:relative;margin-bottom:18px}
+.dcc-feed-stage .cinema-signal{margin:0!important;min-height:315px;height:315px!important}
+.dcc-live-feed{position:absolute;z-index:5;top:15px;bottom:15px;width:28%;padding:14px;overflow:auto;border:1px solid rgba(var(--accent-rgb),.26);border-radius:13px;background:rgba(7,19,31,var(--panel-alpha,.78));backdrop-filter:blur(15px);box-shadow:0 10px 28px #0003;scrollbar-width:thin}
+.dcc-live-feed.github{left:15px}
+.dcc-live-feed.vercel{right:15px}
+.dcc-live-head{display:flex;gap:8px;align-items:center;padding-bottom:10px;border-bottom:1px solid rgba(var(--accent-rgb),.2);font:600 11px Orbitron,sans-serif;color:var(--accent)}
+.dcc-live-head span{margin-left:auto;color:#9ab1bf;font-size:9px}
+.dcc-live-row{padding:12px 0;border-bottom:1px solid #ffffff15}
+.dcc-live-rowtop,.dcc-live-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dcc-live-rowtop strong{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.dcc-live-rowtop>span,.dcc-live-foot{font-size:10px;color:#94aabb}
+.dcc-live-row p,.dcc-live-empty{font-size:11px;line-height:1.5;color:#b5c9d5;margin:7px 0;overflow-wrap:anywhere}
+.dcc-live-foot code{font-size:10px}
+.dcc-live-link{display:grid;place-items:center;min-width:30px;min-height:30px;border:1px solid #ffffff24;border-radius:7px}
+@media(max-width:1100px){.dcc-live-feed{width:31%}.dcc-live-head span{display:none}}
+@media(max-width:900px){.dcc-feed-stage{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dcc-feed-stage .cinema-signal{grid-column:1/-1;height:230px!important;min-height:230px}.dcc-live-feed{position:relative;top:auto;bottom:auto;left:auto!important;right:auto!important;width:auto;max-height:230px}.dcc-live-feed.github{grid-column:1}.dcc-live-feed.vercel{grid-column:2}}
+@media(max-width:540px){.dcc-feed-stage{grid-template-columns:1fr}.dcc-live-feed.github,.dcc-live-feed.vercel{grid-column:1}.dcc-feed-stage .cinema-signal{grid-column:1;height:205px!important;min-height:205px}}
