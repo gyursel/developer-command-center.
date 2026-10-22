@@ -17,7 +17,7 @@ export async function snapshot(){
  const sites=await get('sites',initialSites), settings=await get('settings',initialSettings);
  const summaries=await db().prepare("SELECT site_id,count(*) as samples,min(at) as start,sum(CASE WHEN json_extract(value,'$.status') IN ('Online','Warning') THEN 1 ELSE 0 END) as available,sum(CASE WHEN json_extract(value,'$.status') != 'Unknown' THEN 1 ELSE 0 END) as measured FROM checks GROUP BY site_id").all<any>();
  const stats=new Map(summaries.results.map((r:any)=>[r.site_id,r]));
- const histories=await Promise.all(sites.map(async(s:any)=>{const rows=await db().prepare('SELECT value FROM checks WHERE site_id=? ORDER BY at DESC LIMIT 240').bind(s.id).all<any>();return [s.id,rows.results.map((r:any)=>JSON.parse(r.value))] as const;}));
+ const histories=await Promise.all(sites.map(async(s:any)=>{const rows=await db().prepare('SELECT value FROM checks WHERE site_id=? ORDER BY at DESC LIMIT 60').bind(s.id).all<any>();return [s.id,rows.results.map((r:any)=>JSON.parse(r.value))] as const;}));
  const by=new Map(histories);
  const integrations=await get('integrations',{});
  // Staleness is evaluated independently of collection; a stalled collector cannot hide it.
