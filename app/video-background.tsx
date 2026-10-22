@@ -21,8 +21,9 @@ export default function VideoBackground(){
   if(!enabled||document.hidden){video.pause();setPaused(true);return;}
   const play=()=>{void video.play().then(()=>setPaused(false)).catch(()=>setPaused(true));};
   play();
-  document.addEventListener('visibilitychange',play);
-  return()=>document.removeEventListener('visibilitychange',play);
+  const sync=()=>{if(document.hidden){video.pause();setPaused(true);}else play();};
+  document.addEventListener('visibilitychange',sync);
+  return()=>document.removeEventListener('visibilitychange',sync);
  },[enabled]);
  return <>
   <div className="tech-background" aria-hidden="true">
