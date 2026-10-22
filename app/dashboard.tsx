@@ -27,7 +27,7 @@ export default function Dashboard(){
  const expireSession=useCallback(()=>{authBlocked.current=true;setAuthRequired(true);setError('Сесията е изтекла. Влез отново.');},[]);
  const drag=useRef<string|null>(null),seen=useRef<Set<string>|null>(null),resize=useRef<any>(null);
  const notify=useCallback((s:string)=>{setToast(s);setTimeout(()=>setToast(''),4500);},[]);
- const load=useCallback(async()=>{if(authBlocked.current||loading.current)return;loading.current=true;try{const r=await apiFetch('/api/state');if(!r.ok)throw new Error(r.status===401?'Сесията е изтекла. Влез отново.':'Не успяхме да заредим данните.');const d:any=await r.json();const items:any[]=Object.values(d.integrations||{}).flatMap((x:any)=>x?.items||[]);
+ const load=useCallback(async()=>{if(authBlocked.current||loading.current)return;loading.current=true;try{const r=await apiFetch('/api/state');if(!r.ok)throw new Error(r.status===401?'Сесията е изтекла. Влез отново.':r.status===503?'Сървърът временно не може да зареди данните (503). Опитай отново.':`Не успяхме да заредим данните (HTTP ${r.status}).`);const d:any=await r.json();const items:any[]=Object.values(d.integrations||{}).flatMap((x:any)=>x?.items||[]);
  const current=new Set(items.filter(x=>x.kind==='github'||x.kind==='vercel').map(x=>x.kind+':'+x.id+(x.kind==='vercel'?':'+x.status:'')));
  if(activityKnown.current){
   const fresh=items.filter(x=>(x.kind==='github'||x.kind==='vercel')&&!activityKnown.current!.has(x.kind+':'+x.id+(x.kind==='vercel'?':'+x.status:'')));
