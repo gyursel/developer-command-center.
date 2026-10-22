@@ -770,11 +770,11 @@ html,body{background:#060c12!important;min-height:100%}
 @media(prefers-reduced-motion:reduce){.cinema-signal.has-update .cinema-center,.cinema-signal.has-update .cinema-center::after{animation:none!important}.cinema-signal.has-update .cinema-center::after{opacity:.65;transform:none}}
 
 /* Only newly detected events appear in the side feeds (at most 2 per provider). */
-.dcc-live-feed{font-size:13px;padding:15px;overflow-y:auto}
-.dcc-live-head{font-size:13px;line-height:1.45}
-.dcc-live-head span{font-size:10px}
-.dcc-live-rowtop strong{font-size:13px;line-height:1.5}
-.dcc-live-rowtop>span,.dcc-live-foot{font-size:11px}
-.dcc-live-row p{font-size:12px;line-height:1.55}
-.dcc-live-foot code{font-size:11px}
-.dcc-live-feed .badge{font-size:11px}
+.dcc-live-feed{font-size:16.25px;padding:15px;overflow-y:auto}
+.dcc-live-head{font-size:16.25px;line-height:1.45}
+.dcc-live-head span{font-size:12.5px}
+.dcc-live-rowtop strong{font-size:16.25px;line-height:1.5}
+.dcc-live-rowtop>span,.dcc-live-foot{font-size:13.75px}
+.dcc-live-row p{font-size:15px;line-height:1.55}
+.dcc-live-foot code{font-size:13.75px}
+.dcc-live-feed .badge{font-size:13.75px}
