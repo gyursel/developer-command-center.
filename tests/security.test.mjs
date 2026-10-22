@@ -1,0 +1,22 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {webUrl,publicIP,publicDNS,probe,classify,nextAvailability} from '../lib/security.ts';
+test('blocks private, encoded literals, credentials, alternate ports and schemes',()=>{
+ for(const u of ['http://127.0.0.1','http://2130706433','http://0x7f000001','http://[::1]','http://localhost','https://a.local','https://a.internal','file:///etc/passwd','http://a.com:8080','http://user:pass@example.com','https://example.com/#x'])assert.throws(()=>webUrl(u),u);
+ assert.equal(webUrl('https://example.com/path?q=a').hostname,'example.com');
+});
+test('rejects non-public A and AAAA answers',()=>{
+ for(const ip of ['10.0.0.2','127.0.0.1','100.64.0.1','169.254.169.254','172.16.0.1','192.168.1.1','192.0.2.1','198.18.0.1','198.51.100.1','203.0.113.1','224.0.0.1','::1','fc00::1','fe80::1','::ffff:127.0.0.1','2001:db8::1','2002:7f00:1::'])assert.equal(publicIP(ip),false,ip);
+ for(const ip of ['8.8.8.8','1.1.1.1','104.16.132.229','2606:4700:4700::1111'])assert.equal(publicIP(ip),true,ip);
+});
+const dns=(ip='1.1.1.1')=>new Response(JSON.stringify({Status:0,Answer:[{type:ip.includes(':')?28:1,data:ip}]}),{headers:{'content-type':'application/json'}});
+test('DNS resolution fails closed when any answer is private',async()=>{await assert.rejects(publicDNS(new URL('https://example.com'),new AbortController().signal,async()=>dns('10.0.0.1')));});
+test('redirect to private host is blocked before target fetch',async()=>{const calls=[];const r=await probe('https://example.com',async u=>{calls.push(String(u));return String(u).includes('dns-query')?dns():new Response(null,{status:302,headers:{location:'http://169.254.169.254/latest/meta-data'}});});assert.equal(r.status,'Offline');assert.equal(calls.length,3);assert.equal(r.sslDays,null);});
+test('redirect DNS is checked for each host',async()=>{let target=false;const r=await probe('https://example.com',async u=>{u=String(u);if(u.includes('dns-query'))return dns(u.includes('name=evil.com')?'127.0.0.1':'1.1.1.1');if(u.includes('evil.com'))target=true;return new Response(null,{status:302,headers:{location:'https://evil.com/'}});});assert.equal(r.status,'Unknown');assert.equal(target,false);});
+test('4xx is a warning, 5xx and network errors are offline',async()=>{assert.equal(classify(404),'Warning');assert.equal(classify(500),'Offline');assert.equal(classify(200),'Online');assert.equal(classify(null),'Offline');const r=await probe('https://example.com',async u=>String(u).includes('dns-query')?dns():new Response(null,{status:403}));assert.equal(r.code,403);assert.equal(r.status,'Warning');assert.equal(r.sslExpires,null);});
+test('redirect loop is bounded and HTTPS downgrade blocked',async()=>{let count=0;const r=await probe('https://example.com',async u=>{count++;return String(u).includes('dns-query')?dns():new Response(null,{status:302,headers:{location:'https://example.com/loop'}});});assert.equal(r.status,'Offline');assert.equal(count,15);const d=await probe('https://example.com',async u=>String(u).includes('dns-query')?dns():new Response(null,{status:302,headers:{location:'http://example.com'}}));assert.equal(d.status,'Offline');});
+test('first check is baseline; transition and recovery need two consecutive checks',()=>{const b=nextAvailability(null,'Online');assert.equal(b.transition,false);const a=nextAvailability(b,'Offline');assert.equal(a.transition,false);const c=nextAvailability(a,'Offline');assert.equal(c.transition,true);assert.equal(c.stable,'Offline');const d=nextAvailability(c,'Online');assert.equal(d.transition,false);const e=nextAvailability(d,'Online');assert.equal(e.transition,true);assert.equal(e.previous,'Offline');assert.equal(nextAvailability(e,'Online').transition,false);});
+test('flapping does not create an availability transition',()=>{let s=nextAvailability(null,'Online');for(const status of ['Offline','Online','Offline','Online','Warning','Online']){s=nextAvailability(s,status);assert.equal(s.transition,false);}assert.equal(s.stable,'Online');});
+test('an offline first sample is a silent baseline',()=>{const s=nextAvailability(null,'Offline');assert.equal(s.transition,false);assert.equal(nextAvailability(s,'Offline').transition,false);});
+
+test('Cloudflare-compatible transport does not use unsupported redirect:error',async()=>{const r=await probe('https://example.com',async(u,init)=>{assert.notEqual(init.redirect,'error');return String(u).includes('dns-query')?dns():new Response(null,{status:200});});assert.equal(r.status,'Online');});

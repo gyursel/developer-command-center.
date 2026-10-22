@@ -1,0 +1,1 @@
+declare namespace Cloudflare { interface Env { DB:D1Database; ASSETS:Fetcher; APP_ORIGIN:string; OWNER_USERNAME:string; OWNER_PASSWORD_HASH:string; CREDENTIAL_ENCRYPTION_KEY?:string; GITHUB_TOKEN?:string; VERCEL_TOKEN?:string; } }

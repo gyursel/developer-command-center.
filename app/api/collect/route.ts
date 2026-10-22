@@ -1,0 +1,3 @@
+import {getOwner} from '../../owner-auth';
+import {collect} from '../../../lib/collect';
+export async function POST(req:Request){if(!await getOwner())return Response.json({error:'Unauthorized'},{status:401});const origin=req.headers.get('origin');if(origin&&origin!==new URL(req.url).origin)return Response.json({error:'Forbidden'},{status:403});try{let body:any={};try{body=await req.json();}catch{}return Response.json(await collect(typeof body.siteId==='string'?body.siteId:undefined),{headers:{'Cache-Control':'no-store'}});}catch{return Response.json({error:'Проверката не завърши. Опитай отново.'},{status:503});}}
