@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" fill="none">
+<defs><filter id="glow" x="-40%" y="-60%" width="180%" height="220%"><feGaussianBlur stdDeviation="6"/></filter><linearGradient id="neon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9df8ff"/><stop offset=".54" stop-color="#2eeaff"/><stop offset="1" stop-color="#00aef4"/></linearGradient></defs>
+<path id="wave" d="M15 80 C31 80 28 66 29 61 C30 48 47 48 48 64 L48 84 C48 103 69 104 70 83 L70 27 C70 5 93 5 94 27 L94 83 C94 105 117 105 118 83 L118 62 C119 45 139 45 141 62 C143 79 148 80 159 80" stroke="#0acfff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)" opacity=".85"/>
+<use href="#wave" stroke="url(#neon)" stroke-width="7" filter="none"/>
+</svg>
