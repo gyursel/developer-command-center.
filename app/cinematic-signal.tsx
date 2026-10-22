@@ -2,7 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 
 /** Progressive-enhancement motion sequence; never blocks the functional dashboard. */
-export default function CinematicSignal(){
+export default function CinematicSignal({attention=false}:{attention?:boolean}){
  const root=useRef<HTMLElement>(null);
  const [motion,setMotion]=useState(false);
  useEffect(()=>{
@@ -24,7 +24,7 @@ export default function CinematicSignal(){
   update();window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);
   return()=>{cancelAnimationFrame(raf);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
  },[motion]);
- return <section ref={root} className={'cinema-signal '+(motion?'is-animated':'is-still')} aria-label="Визуална карта на командния център">
+ return <section ref={root} className={'cinema-signal '+(motion?'is-animated':'is-still')+(attention?' has-update':'')} aria-label="Визуална карта на командния център">
   <div className="cinema-scene" aria-hidden="true">
    <div className="cinema-grid"/>
    <span className="cinema-trace trace-one"/><span className="cinema-trace trace-two"/>
