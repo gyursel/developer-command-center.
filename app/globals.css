@@ -216,3 +216,18 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
   :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note,button,a,[role="button"]) {transition-duration:.01ms!important}
   :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note,button,a,[role="button"]):hover {transform:none!important}
 }
+
+
+/* Brand logo animation and glow-only interactions (no hover elevation) */
+.sidebar .brand-logo-only{display:flex;justify-content:center;align-items:center;padding:14px 6px 9px;min-height:145px;letter-spacing:normal;flex-shrink:0}
+.animated-logo-shell{display:flex;position:relative;align-items:center;justify-content:center;width:170px;height:116px;isolation:isolate}
+.animated-logo-glow{position:absolute;inset:24px 25px;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,rgba(var(--accent-rgb),.30),transparent 72%);filter:blur(16px);animation:dccLogoAura 3.6s ease-in-out infinite}
+.animated-logo{position:relative;z-index:1;display:block;width:152px;height:100px;object-fit:contain;filter:drop-shadow(0 0 9px rgba(var(--accent-rgb),.45));animation:dccLogoPulse 3.6s ease-in-out infinite}
+@keyframes dccLogoAura{0%,100%{opacity:.45;scale:.94}50%{opacity:1;scale:1.12}}
+@keyframes dccLogoPulse{0%,100%{opacity:.82;filter:drop-shadow(0 0 5px rgba(var(--accent-rgb),.4))}50%{opacity:1;filter:drop-shadow(0 0 17px rgba(var(--accent-rgb),.8)) drop-shadow(0 0 25px rgba(var(--accent-rgb),.3))}}
+@media (hover:hover) and (pointer:fine){
+ .app-shell :is(.panel,.stat-card,.workspace,.health-strip,.shortcut,.provider,.site-avatar,.visual-preview,.private-note,.connection-card,.detail-stats>div,.outline-btn,.primary-btn,.danger-btn,.icon-btn,.sidebar nav button,.segments button,button,a,[role="button"]):hover:not(.animated-logo),
+ .app-shell :is(button,a):active:not(.brand-logo-only){transform:none!important}
+ .app-shell .brand-logo-only:hover{transform:none!important}
+}
+@media(prefers-reduced-motion:reduce){.animated-logo,.animated-logo-glow{animation:none!important}}
