@@ -731,3 +731,15 @@ html,body{background:#060c12!important;min-height:100%}
 @keyframes dcc-attention{0%,100%{filter:drop-shadow(0 0 8px rgba(var(--accent-rgb),.3))}50%{filter:drop-shadow(0 0 38px rgba(var(--accent-rgb),1)) brightness(1.5)}}
 @media(max-width:900px){.dcc-live-feed{position:relative;top:auto;bottom:auto;transform:none;width:auto;max-height:180px}.dcc-live-feed.github,.dcc-live-feed.vercel{left:auto;right:auto}}
 @media(prefers-reduced-motion:reduce){.cinema-signal.has-update .cinema-center{animation:none!important}.cinema-signal.has-update .cinema-ring{box-shadow:0 0 12px rgba(var(--accent-rgb),.5)!important}}
+
+/* Keep the orange action button contained: no ambient orange cloud over hero. */
+.app-shell .page-heading::before{background:none!important}
+.app-shell .page-heading .command-orbit{display:none!important}
+.app-shell .page-heading .heading-actions .primary-btn{
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.23)!important;
+ filter:none!important;
+}
+.app-shell .page-heading .heading-actions .primary-btn:hover,
+.app-shell .page-heading .heading-actions .primary-btn:focus-visible{
+ box-shadow:0 0 0 2px rgba(var(--accent-rgb),.23),inset 0 1px 0 rgba(255,255,255,.23)!important;
+}
