@@ -240,3 +240,8 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
 @keyframes dccLogoSharpPulse{0%,100%{filter:drop-shadow(0 0 2px #3deeff)!important}50%{filter:drop-shadow(0 0 7px #3deeff)!important}}
 @keyframes dccLogoSoftHalo{0%,100%{opacity:.22;scale:.95}50%{opacity:.48;scale:1.04}}
 @media(prefers-reduced-motion:reduce){.sidebar .animated-logo,.sidebar .animated-logo-glow{animation:none!important}}
+
+/* Adjustable logo settings, stored with dashboard visual preferences */
+.sidebar .animated-logo-shell{width:100%;max-width:215px;height:135px;overflow:visible}
+.sidebar .animated-logo{width:var(--logo-width,190px)!important;height:auto!important;max-width:none!important;max-height:none!important;flex-shrink:0;opacity:var(--logo-opacity,1)!important}
+.sidebar .animated-logo-glow{opacity:calc(var(--logo-opacity,1) * .35)}
