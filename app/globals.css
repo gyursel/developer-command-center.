@@ -245,3 +245,16 @@ textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui
 .sidebar .animated-logo-shell{width:100%;max-width:215px;height:135px;overflow:visible}
 .sidebar .animated-logo{width:var(--logo-width,190px)!important;height:auto!important;max-width:none!important;max-height:none!important;flex-shrink:0;opacity:var(--logo-opacity,1)!important}
 .sidebar .animated-logo-glow{opacity:calc(var(--logo-opacity,1) * .35)}
+
+/* Logo glow strength, independently configurable from size and transparency */
+.sidebar .animated-logo {animation:dccLogoGlowAdjustable 3.8s ease-in-out infinite!important}
+.sidebar .animated-logo-glow{animation:dccLogoHaloAdjustable 3.8s ease-in-out infinite!important}
+@keyframes dccLogoGlowAdjustable {
+  0%,100% {filter:drop-shadow(0 0 calc(var(--logo-glow, .35) * 5px) rgba(var(--accent-rgb),calc(var(--logo-glow, .35) * .7)))}
+  50% {filter:drop-shadow(0 0 calc(var(--logo-glow, .35) * 18px) rgba(var(--accent-rgb),var(--logo-glow, .35)))}
+}
+@keyframes dccLogoHaloAdjustable {
+  0%,100% {opacity:calc(var(--logo-glow, .35) * var(--logo-opacity, 1) * .3);scale:.96}
+  50% {opacity:calc(var(--logo-glow, .35) * var(--logo-opacity, 1) * .75);scale:1.04}
+}
+@media(prefers-reduced-motion:reduce){.sidebar .animated-logo,.sidebar .animated-logo-glow{animation:none!important}}
