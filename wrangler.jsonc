@@ -22,7 +22,8 @@
     ]
   },
   "vars": {
-    "APP_ORIGIN": "http://localhost:5173",
+    "APP_ORIGIN": "https://developer-command-center.peter200419.workers.dev",
     "OWNER_USERNAME": "admin"
-  }
+  },
+  "workers_dev": true
 }
