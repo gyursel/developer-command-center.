@@ -404,3 +404,22 @@ html,body{background:#060c12!important;min-height:100%}
  .dcc-mobile-header :is(button,a):focus-visible,.dcc-mobile-close:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 }
 @media(min-width:761px){.dcc-mobile-header,.dcc-mobile-close{display:none!important}}
+
+/* Cinematic responsive v2: poster-first video, touch affordances and safe areas. */
+.tech-background{background:#050c13 url('/hi-tech-poster.jpg') center center/cover no-repeat}
+.tech-background video{position:absolute;inset:0;display:block}
+.video-toggle{min-height:44px;min-width:66px;display:inline-flex;align-items:center;justify-content:center;bottom:max(12px,env(safe-area-inset-bottom));right:max(14px,env(safe-area-inset-right))}
+@media(max-width:760px){
+ .tech-background{background-position:50% 45%}
+ .app-shell .topbar .breadcrumb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .app-shell .panel-head .row{flex-wrap:wrap;justify-content:flex-end}
+ .app-shell .page-heading{scroll-margin-top:calc(76px + env(safe-area-inset-top))}
+ .app-shell .site-identity{min-width:150px;text-align:left}
+ .app-shell .table-scroll{overscroll-behavior-x:contain}
+ .app-shell .modal-layer{overscroll-behavior:contain}
+ .video-toggle{right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+ .tech-background video{display:none}
+ .tech-background .tech-shade{transition:none!important}
+}
