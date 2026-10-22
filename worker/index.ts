@@ -30,7 +30,7 @@ export default {
   }catch{return secure(Response.json({error:'Временна сървърна грешка.'},{status:503}));}
  },
  async scheduled(_controller:ScheduledController,env:Cloudflare.Env,_ctx:ExecutionContext){
-  await collect();await put('scheduler',{enabled:true,intervalMinutes:60,lastRun:Date.now(),provider:'Cloudflare Cron'});
+  await collect();await put('scheduler',{enabled:true,intervalMinutes:1,lastRun:Date.now(),provider:'Cloudflare Cron'});
   await env.DB.batch([env.DB.prepare('DELETE FROM auth_sessions WHERE expires<?').bind(Date.now()),env.DB.prepare('DELETE FROM auth_attempts WHERE expires<?').bind(Date.now())]);
  }
 };

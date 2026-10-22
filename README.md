@@ -89,8 +89,7 @@ Mutations изискват съвпадащ Origin. Header-и, имитиращ�
 
 ## Независим фонов мониторинг
 
-`triggers.crons` е `10 * * * *`: всеки час в минута 10, UTC. Понеже часовете са
-всички, това е и минута 10 във всеки час в София. Worker scheduled handler
+`triggers.crons` е `* * * * *`: всяка минута. Worker scheduled handler
 извиква същия collector директно; браузър, Mac и ChatGPT не са необходими.
 Dashboard показва графика активен след първото успешно cron изпълнение.
 След deployment провери Cloudflare → Worker → Triggers/Cron Events. Реално
