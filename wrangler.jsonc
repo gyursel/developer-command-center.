@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "developer-command-center",
-      "database_id": "00000000-0000-4000-8000-000000000000",
+      "database_id": "b4eacd44-7a5e-4284-8d9a-07858849da3d",
       "migrations_dir": "drizzle"
     }
   ],
