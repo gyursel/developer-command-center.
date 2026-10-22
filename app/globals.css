@@ -709,34 +709,25 @@ html,body{background:#060c12!important;min-height:100%}
 @media(max-width:900px){.dcc-feed-stage{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dcc-feed-stage .cinema-signal{grid-column:1/-1;height:230px!important;min-height:230px}.dcc-live-feed{position:relative;top:auto;bottom:auto;left:auto!important;right:auto!important;width:auto;max-height:230px}.dcc-live-feed.github{grid-column:1}.dcc-live-feed.vercel{grid-column:2}}
 @media(max-width:540px){.dcc-feed-stage{grid-template-columns:1fr}.dcc-live-feed.github,.dcc-live-feed.vercel{grid-column:1}.dcc-feed-stage .cinema-signal{grid-column:1;height:205px!important;min-height:205px}}
 
-/* Accessibility typography: readable secondary information throughout DCC. */
-.app-shell :is(.muted,.tiny,small,.under,.breadcrumb,.time-zone,.eyebrow,.nav-label,.stat-label,.stat-bottom,.panel-foot,.private-note,.workspace small,.owner small,.deploy-text small,.alert-text small,.site-identity small){font-family:'Manrope',system-ui,sans-serif;line-height:1.55;letter-spacing:normal}
-.app-shell .tiny,.app-shell small,.app-shell .under,.app-shell .panel-foot,.app-shell .breadcrumb,.app-shell .time-zone{font-size:13px!important}
-.app-shell :is(.stat-label,.stat-bottom,.deploy-text p,.alert-text p,.site-identity small,.nav-label,.sidebar nav button){font-size:14px!important}
-.app-shell .eyebrow{font-size:12px!important;letter-spacing:.08em}
-.app-shell .panel-title h2{font-size:clamp(16px,1.3vw,19px)}
-.app-shell :is(.segments button,.text-btn,.outline-btn,.primary-btn){font-size:13px;line-height:1.5}
-.app-shell :is(.badge,.count){font-size:12px!important;line-height:1.45}
-.app-shell :is(.sites-table th,.sites-table td){font-size:13px}
-.app-shell .sites-table th{letter-spacing:.04em}
-.app-shell :is(.stat-card,.panel,.shortcut){color:#e6f0f5}
-.app-shell :is(.muted,.tiny,.under,.stat-label,.stat-bottom,.panel-foot,.breadcrumb,.time-zone){color:#b3c5cf}
-.dcc-live-feed{font-family:'Manrope',system-ui,sans-serif}
-.dcc-live-head{font-size:13px!important;letter-spacing:.055em}
-.dcc-live-head span{font-family:'Manrope',system-ui,sans-serif;font-size:11px!important}
-.dcc-live-rowtop strong{font-size:14px!important;font-weight:700}
-.dcc-live-rowtop>span,.dcc-live-foot{font-size:12px!important;line-height:1.5}
-.dcc-live-row p,.dcc-live-empty{font-size:13px!important;line-height:1.6;color:#d0dce4}
-.dcc-live-foot code{font-size:12px!important}
-.dcc-live-row{padding:13px 0}
-.dcc-live-feed{width:30%;padding:15px}
-.diagnostic-panel :is(p,li){font-size:14px}
-.diagnostic-log-row{font-size:12px!important}
-@media(max-width:1250px){.dcc-live-head span{display:none}}
-@media(max-width:900px){.dcc-live-feed{width:auto}}
-@media(max-width:760px){
- .app-shell .tiny,.app-shell small,.app-shell .under{font-size:13px!important}
- .app-shell :is(.stat-label,.sidebar nav button){font-size:14px!important}
- .dcc-live-feed{padding:14px}
- .dcc-live-rowtop strong{white-space:normal;overflow-wrap:anywhere}
-}
+
+/* Readable type, without the previous global tiny-text overrides */
+.app-shell{font-family:'Manrope',system-ui,sans-serif}
+.app-shell :is(.panel,.stat-card,.sites-table,.deploy-text,.alert-text,.modal){font-family:'Manrope',system-ui,sans-serif}
+.app-shell :is(.tiny,.muted,.under,small,.panel-foot,.stat-label,.stat-bottom){font-size:clamp(13px,1vw,15px)!important;line-height:1.55!important;letter-spacing:normal}
+.app-shell :is(.sites-table td,.deploy-text p,.site-identity strong,.alert-text p){font-size:clamp(14px,1.05vw,16px)!important;line-height:1.5}
+.app-shell :is(.panel-title h2,.stat-value,.page-heading h1,.dcc-live-head,.cinema-core){font-family:'Orbitron','Manrope',sans-serif}
+.app-shell :is(.segments button,.outline-btn,.primary-btn,.text-btn){font-size:14px;line-height:1.5}
+.app-shell :is(.badge,.count){font-size:12px}
+.dcc-live-feed{width:min(28%,290px);top:50%;bottom:auto;transform:translateY(-50%);max-height:80%;padding:15px;border-color:rgba(var(--accent-rgb),.25)}
+.dcc-live-head{font:700 14px 'Orbitron',sans-serif}
+.dcc-live-head span{font-size:12px;color:#c3d5dd}
+.dcc-live-rowtop strong{font:700 15px/1.4 'Manrope',sans-serif}
+.dcc-live-row p,.dcc-live-empty{font:500 14px/1.6 'Manrope',sans-serif;color:#d4e2ec}
+.dcc-live-rowtop>span,.dcc-live-foot,.dcc-live-foot code{font-size:13px}
+.dcc-live-row{padding:10px 0}
+.cinema-signal.has-update .cinema-center{filter:drop-shadow(0 0 24px rgba(var(--accent-rgb),.85));animation:dcc-attention 1.1s ease-in-out infinite!important}
+.cinema-signal.has-update .cinema-ring{border-color:rgba(var(--accent-rgb),.9)!important;box-shadow:0 0 24px rgba(var(--accent-rgb),.85),inset 0 0 15px rgba(var(--accent-rgb),.4)!important}
+.cinema-signal.has-update .cinema-core{text-shadow:0 0 12px rgba(var(--accent-rgb),1),0 0 35px rgba(var(--accent-rgb),.95)}
+@keyframes dcc-attention{0%,100%{filter:drop-shadow(0 0 8px rgba(var(--accent-rgb),.3))}50%{filter:drop-shadow(0 0 38px rgba(var(--accent-rgb),1)) brightness(1.5)}}
+@media(max-width:900px){.dcc-live-feed{position:relative;top:auto;bottom:auto;transform:none;width:auto;max-height:180px}.dcc-live-feed.github,.dcc-live-feed.vercel{left:auto;right:auto}}
+@media(prefers-reduced-motion:reduce){.cinema-signal.has-update .cinema-center{animation:none!important}.cinema-signal.has-update .cinema-ring{box-shadow:0 0 12px rgba(var(--accent-rgb),.5)!important}}
