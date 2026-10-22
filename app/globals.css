@@ -356,3 +356,31 @@ html,body{background:#060c12!important;min-height:100%}
 .app-shell :is(.panel,.stat-card,.shortcut):hover{border-color:rgba(var(--accent-rgb),.35);box-shadow:0 0 16px rgba(var(--accent-rgb),.10),0 10px 25px rgba(0,0,0,.13);transform:none!important}
 .app-shell :is(.panel-title h2,.section-title,.stat-value){text-shadow:0 1px 2px rgba(0,0,0,.3)}
 @media(max-width:760px){.app-shell .sidebar{background:rgba(12,22,32,.72)!important}.app-shell :is(.panel,.stat-card){background:rgba(18,30,41,.46)!important}}
+
+/* DCC micro-polish: precise spacing and clean visual hierarchy */
+.app-shell .panel,.app-shell .stat-card{overflow-wrap:anywhere}
+.app-shell .panel-head{gap:12px}
+.app-shell .panel-title{min-width:0}
+.app-shell .panel-title h2{font-weight:700;letter-spacing:.015em;line-height:1.35}
+.app-shell .eyebrow,.app-shell .nav-label{letter-spacing:.12em}
+.app-shell .stat-value{font-variant-numeric:tabular-nums;letter-spacing:-.025em;line-height:1.16}
+.app-shell .stat-card{transition:border-color .22s ease,box-shadow .22s ease}
+.app-shell :is(.sidebar nav button,.shortcut,.outline-btn,.primary-btn,.icon-btn){transition:background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease}
+.app-shell .sidebar nav button{border-radius:10px}
+.app-shell :is(.outline-btn,.primary-btn){font-weight:650;letter-spacing:.015em}
+.app-shell :is(.panel,.stat-card,.shortcut):focus-within{border-color:rgba(var(--accent-rgb),.36)}
+.app-shell .panel-head :is(button,a){flex-shrink:0}
+.app-shell :is(.site-identity,.alert-text,.deploy-text){min-width:0}
+.app-shell :is(.site-identity strong,.alert-text p,.deploy-text p){overflow-wrap:anywhere}
+.app-shell :is(input,select,textarea){transition:border-color .2s ease,box-shadow .2s ease}
+.app-shell :is(input,select,textarea):focus{border-color:rgba(var(--accent-rgb),.55);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.10)}
+@media(max-width:760px){
+ .app-shell .panel-title h2{font-size:clamp(14px,3.8vw,17px)}
+ .app-shell .panel-head{gap:9px}
+ .app-shell .stat-value{font-size:clamp(22px,6vw,29px)}
+ .app-shell .sidebar nav button{font-size:14px}
+ .app-shell .top-actions button{flex-shrink:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .app-shell :is(.sidebar nav button,.shortcut,.outline-btn,.primary-btn,.icon-btn,.stat-card){transition:none!important}
+}
