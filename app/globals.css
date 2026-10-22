@@ -104,3 +104,18 @@ input[type=range],input[type=checkbox]{accent-color:var(--accent)}.modal{border-
 
 /* Shared typography for controls, data, and dialog content. */
 textarea,option,optgroup,pre,kbd,samp{font-family:'Orbitron','Manrope',system-ui,sans-serif}
+
+/* Text-only customization leaves surfaces, icons and control opacity unchanged. */
+.app-shell,.app-shell *{
+ -webkit-text-fill-color:color-mix(in srgb,var(--word-color,currentColor) var(--word-opacity,100%),transparent);
+}
+.app-shell .modal-layer,.app-shell .modal-layer *{
+ -webkit-text-fill-color:currentColor;
+}
+.app-shell .modal-layer .text-style-sample{
+ -webkit-text-fill-color:color-mix(in srgb,var(--preview-word-color,var(--text)) var(--preview-word-opacity,100%),transparent);
+}
+.text-color-field{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:16px 0}
+.text-color-field input[type=color]{width:56px;height:42px;min-height:42px;padding:4px;cursor:pointer}
+.text-color-field code{font-size:12px}
+.text-style-sample{white-space:normal;overflow-wrap:anywhere}
