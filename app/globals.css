@@ -285,3 +285,61 @@ html,body{background:#060c12!important;min-height:100%}
 .app-shell :is(.nav-active-dot,.section-mark,.panel-icon svg,.stat-label svg,.shortcut-icon svg){opacity:1!important;filter:none!important;color:var(--accent,#79e5ce)!important;-webkit-text-fill-color:var(--accent,#79e5ce)!important}
 .app-shell :is(.good,.bad,.warn,.badge.good,.badge.bad,.badge.warn) :is(span,strong,small,i){-webkit-text-fill-color:inherit!important}
 @media(max-width:760px){.app-shell .sidebar{background:rgba(8,15,23,.78)!important}.app-shell :is(.panel,.stat-card){background:rgba(11,19,29,.58)!important}}
+
+
+/* Responsive refinement: mobile-first cinematic command center, preserving data and branding. */
+:root{--dcc-tap-target:44px}
+.app-shell .topbar{min-height:68px}
+.app-shell .mobile-menu{min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.app-shell :is(button,a,input,select,textarea):focus-visible{outline:2px solid var(--accent,#79e5ce);outline-offset:3px}
+.app-shell .panel,.app-shell .stat-card,.app-shell .shortcut{transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease}
+.app-shell :is(.panel,.stat-card,.shortcut):hover{transform:none!important}
+.app-shell :is(.panel,.stat-card){min-width:0}
+.app-shell .panel-head,.app-shell .panel-toolbar,.app-shell .panel-foot{min-width:0}
+.app-shell .sites-table{min-width:580px}
+.app-shell .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:760px){
+ .app-shell main{padding:20px 14px 10px}
+ .app-shell .topbar{height:64px;min-height:64px;padding:0 12px;gap:8px;position:sticky;top:0;z-index:24}
+ .app-shell .topbar .row{min-width:0}
+ .app-shell .top-actions{gap:8px;min-width:0}
+ .app-shell h1{font-size:clamp(23px,6vw,30px);letter-spacing:-.025em;overflow-wrap:anywhere}
+ .app-shell .page-heading{gap:14px;flex-wrap:wrap}
+ .app-shell .heading-actions{max-width:100%;flex-wrap:wrap;padding-top:0}
+ .app-shell .health-strip{gap:8px;padding:12px;align-items:flex-start}
+ .app-shell .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .app-shell .stat-card{padding:14px 11px;min-width:0}
+ .app-shell .stat-value{font-size:clamp(22px,6vw,29px)}
+ .app-shell .dashboard-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+ .app-shell .dashboard-grid>.panel{grid-column:1/-1!important}
+ .app-shell .panel-head{padding:15px 13px 12px}
+ .app-shell .panel-toolbar{padding:5px 13px 13px}
+ .app-shell .panel-foot{padding:12px 13px}
+ .app-shell .shortcut-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:0 13px 15px}
+ .app-shell .panel-shortcuts .shortcut-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .app-shell .sidebar{width:min(285px,87vw);padding-top:max(18px,env(safe-area-inset-top))}
+ .app-shell .sidebar nav button{min-height:48px}
+ .app-shell .sidebar.open{box-shadow:18px 0 65px #000a}
+ .app-shell .modal-layer{padding:12px;padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(12px,env(safe-area-inset-bottom))}
+ .app-shell .modal{width:100%;max-height:calc(100dvh - 24px);padding:21px 15px;overflow-y:auto}
+ .app-shell .modal-actions{flex-wrap:wrap}
+ .app-shell .modal-actions button{min-height:44px}
+ .app-shell .search{width:100%;max-width:100%}
+ .app-shell .content-tools{flex-wrap:wrap}
+ .tech-background video{object-position:center center}
+}
+@media (max-width:360px){
+ .app-shell main{padding-left:10px;padding-right:10px}
+ .app-shell .stats-grid{gap:8px}
+ .app-shell .stat-card{padding:12px 9px}
+ .app-shell .shortcut-grid,.app-shell .panel-shortcuts .shortcut-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .app-shell .topbar{padding:0 8px}
+}
+@media (min-width:761px) and (max-width:1024px){
+ .app-shell main{padding:25px 19px}
+ .app-shell .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .app-shell .shortcut-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+ .app-shell *, .app-shell *::before,.app-shell *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
