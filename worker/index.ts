@@ -2,7 +2,8 @@ import handler from 'vinext/server/fetch-handler';
 import {authenticated,sameOrigin,allowedAttempt,verifyPassword,createSession,cookie,logout} from '../lib/auth';
 import {loginPage} from '../lib/login-page';
 import {collect} from '../lib/collect';
-import {put} from '../lib/store';
+import {put,snapshot} from '../lib/store';
+import {publicIntegrations} from '../lib/integrations';
 function secure(r:Response){const headers=new Headers(r.headers);headers.set('Cache-Control','no-store');headers.set('X-Content-Type-Options','nosniff');headers.set('X-Frame-Options','DENY');headers.set('Referrer-Policy','same-origin');return new Response(r.body,{status:r.status,headers});}
 export default {
  async fetch(req:Request,env:Cloudflare.Env,ctx:ExecutionContext){
@@ -25,6 +26,12 @@ export default {
    if(!['GET','HEAD','OPTIONS'].includes(req.method)&&!sameOrigin(req))return new Response(null,{status:403});
    if(path==='/logout'){
     if(req.method!=='POST')return new Response(null,{status:405});await logout(req.headers.get('cookie')||'');return secure(new Response(null,{status:303,headers:{Location:'/login','Set-Cookie':cookie('',0)}}));
+   }
+   // Serve frequent dashboard data directly: skip Next/Vinext SSR for this JSON endpoint.
+   if(path==='/api/state'&&req.method==='GET'){
+    const state=await snapshot();
+    state.integrations=publicIntegrations(state.integrations);
+    return secure(Response.json(state));
    }
    return secure(await handler.fetch(req,env,ctx));
   }catch{return secure(Response.json({error:'Временна сървърна грешка.'},{status:503}));}
