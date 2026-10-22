@@ -667,3 +667,22 @@ html,body{background:#060c12!important;min-height:100%}
 .app-shell .page-heading .eyebrow > span:first-child:not(.hero-edition){
  flex:none;width:5px;height:5px;border-radius:50%;
 }
+
+
+/* Website diagnostics: compact, accessible evidence & remediation */
+.diagnostic-panel{margin:20px 0;padding:18px 20px;border:1px solid rgba(var(--accent-rgb),.24);background:linear-gradient(135deg,rgba(12,29,41,.8),rgba(9,21,31,.8));border-radius:14px;overflow:hidden}
+.diagnostic-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.diagnostic-heading h3{font-size:16px}
+.diagnostic-level{font-size:11px;padding:5px 9px;border-radius:20px;border:1px solid #ffffff20}
+.diagnostic-level.issue{color:#ffbc87;border-color:#f5a56e55}
+.diagnostic-level.ok{color:#8ce6c5;border-color:#8ce6c555}
+.diagnostic-title{display:block;margin-bottom:8px;font-size:15px}
+.diagnostic-panel p{margin:8px 0;line-height:1.6}
+.diagnostic-panel h4{font-size:13px;margin:16px 0 8px}
+.diagnostic-panel ol{padding-left:21px;margin:0;display:grid;gap:7px;line-height:1.5}
+.diagnostic-log{max-width:100%;overflow:auto;border:1px solid #ffffff18;border-radius:9px}
+.diagnostic-log-row{display:grid;grid-template-columns:minmax(140px,1.5fr) minmax(74px,.6fr) minmax(74px,.6fr) minmax(60px,.5fr) minmax(130px,2fr);gap:12px;min-width:660px;padding:10px 12px;font:11px/1.5 ui-monospace,monospace}
+.diagnostic-log-row+.diagnostic-log-row{border-top:1px solid #ffffff14}
+.diagnostic-log-row:nth-child(even){background:#ffffff06}
+.diagnostic-log-row span{overflow-wrap:anywhere}
+@media(max-width:760px){.diagnostic-panel{padding:15px 12px}.diagnostic-log-row{gap:8px;padding:10px}}
