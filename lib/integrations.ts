@@ -50,7 +50,7 @@ export async function syncIntegrations(settings:any){
      }
     }
    }
-   state[kind]={connected:true,items:items.sort((a,b)=>b.at-a.at),available,cache,at:Date.now(),error:null,nextAt:Date.now()+5*60000};
+   state[kind]={connected:true,items:items.sort((a,b)=>b.at-a.at),available,cache,at:Date.now(),error:null,nextAt:Date.now()+60000};
    await incident(kind+':api',false);await incident(kind+':stale',false);
    if(kind==='vercel'){
     const currentKeys=items.map(x=>'deployment:'+x.scope+':'+x.projectId);
