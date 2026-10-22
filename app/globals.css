@@ -656,3 +656,14 @@ html,body{background:#060c12!important;min-height:100%}
 @media(prefers-reduced-motion:reduce){
  .cinema-signal *{animation:none!important;transition:none!important}
 }
+
+/* Specificity fix: the edition caption must never inherit the eyebrow status-dot geometry. */
+.app-shell .page-heading .eyebrow > span.hero-edition{
+ width:auto!important;height:auto!important;min-width:0!important;
+ border-radius:0!important;background:transparent!important;
+ color:rgba(var(--accent-rgb),.86)!important;
+ flex:0 1 auto;letter-spacing:.13em;
+}
+.app-shell .page-heading .eyebrow > span:first-child:not(.hero-edition){
+ flex:none;width:5px;height:5px;border-radius:50%;
+}
