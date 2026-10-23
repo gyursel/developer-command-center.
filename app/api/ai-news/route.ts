@@ -18,18 +18,22 @@ function valueOf(xml: string, tag: string) { return decode(xml.match(new RegExp(
 async function fetchSource(source: string, domain: string): Promise<News[]> {
   const query = encodeURIComponent('site:' + domain + ' ("изкуствен интелект" OR AI OR ChatGPT OR OpenAI OR Gemini OR Claude)');
   const url = 'https://news.google.com/rss/search?q=' + query + '&hl=bg&gl=BG&ceid=BG:bg';
-  try {
-    const response = await fetch(url, { signal: AbortSignal.timeout(6500), next: { revalidate: 300 } });
-    if (!response.ok) return [];
-    const xml = await response.text();
-    return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0, 15).map((match) => {
-      const item = match[1];
-      const title = valueOf(item, 'title').replace(/\s+-\s+[^-]+$/, '').trim();
-      const link = valueOf(item, 'link');
-      const published = valueOf(item, 'pubDate');
-      return { title, url: link, source, published };
-    }).filter(item => item.title && keywords.test(item.title) && /^https:\/\/news\.google\.com\//.test(item.url));
-  } catch { return []; }
+  const direct = source === 'Kaldata' ? 'https://www.kaldata.com/it-%D0%BD%D0%BE%D0%B2%D0%B8%D0%BD%D0%B8/%D0%B8%D0%B7%D0%BA%D1%83%D1%81%D1%82%D0%B2%D0%B5%D0%BD-%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%B5%D0%BA%D1%82/feed' : null;
+  for (const feedUrl of [direct, url].filter((v): v is string => Boolean(v))) {
+    try {
+      const response = await fetch(feedUrl, { signal: AbortSignal.timeout(7000), headers: { Accept: 'application/rss+xml, application/xml, text/xml' }, next: { revalidate: 300 } });
+      if (!response.ok) continue;
+      const xml = await response.text();
+      const found = [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].slice(0, 35).map(match => {
+        const item = match[1];
+        const title = valueOf(item, 'title').replace(/\\s+-\\s+[^-]+$/, '').trim();
+        const link = valueOf(item, 'link');
+        return { title, url: link, source, published: valueOf(item, 'pubDate') };
+      }).filter(item => item.title && keywords.test(item.title) && /^https:\\/\\/[^\\s]+$/.test(item.url));
+      if (found.length) return found;
+    } catch { /* Try next available feed. */ }
+  }
+  return [];
 }
 export async function GET() {
   const results = await Promise.all(domains.map(([source, domain]) => fetchSource(source, domain)));
