@@ -21,14 +21,34 @@ export async function syncIntegrations(settings:any){
   try{
    let items:any[]=[];let available:any[]=[];
    if(kind==='github'){
-    available=await read('https://api.github.com/user/repos?per_page=100&sort=pushed');
-    for(const repo of settings.repositories.slice(0,12)){
-     const name=repo.name;const branch=repo.branch||'main';
-     if(!/^[\w.-]+\/[\w.-]+$/.test(name))continue;
-     const commits=await read('https://api.github.com/repos/'+name+'/commits?per_page=5&sha='+encodeURIComponent(branch));
-     for(const c of commits)items.push({kind:'github',id:c.sha,repository:name,name,branch,sha:c.sha.slice(0,7),message:c.commit.message.split('\n')[0],at:Date.parse(c.commit.committer.date),url:c.html_url,status:'Commit'});
+    // Discover all repositories visible to the token; do not rely on a manual allowlist.
+    // Page conservatively (up to 2,000 repos) and check only repositories whose push
+    // timestamp changes, rather than requesting commit history for every repo each minute.
+    const discovered:any[]=[];
+    for(let page=1;page<=20;page++){
+     const pageRows:any[]=await read('https://api.github.com/user/repos?affiliation=owner,collaborator,organization_member&visibility=all&per_page=100&page='+page);
+     discovered.push(...pageRows);
+     if(pageRows.length<100)break;
     }
-    available=available.map((r:any)=>({id:r.full_name,name:r.full_name,branch:r.default_branch}));
+    available=discovered.map((r:any)=>({id:r.full_name,name:r.full_name,branch:r.default_branch||'main',pushedAt:r.pushed_at||null}));
+    const previous=new Map<string,any>((old.available||[]).map((r:any)=>[r.name,r]));
+    const baselineExists=(old.available||[]).some((r:any)=>r.pushedAt!==undefined);
+    const changed=baselineExists?available.filter((r:any)=>{
+     const prior=previous.get(r.name);
+     return !prior||prior.pushedAt!==r.pushedAt;
+    }).sort((a:any,b:any)=>Date.parse(b.pushedAt||'')-Date.parse(a.pushedAt||'')):[];
+    const recent=(old.items||[]).filter((x:any)=>x.kind==='github'&&Date.now()-x.at<24*3600000);
+    items=[...recent];
+    // Cap API requests per sync to protect the free-tier worker and API rate limit.
+    for(const r of changed.slice(0,10)){
+     if(!r.pushedAt)continue;
+     try{
+      const commits:any[]=await read('https://api.github.com/repos/'+r.name+'/commits?per_page=1&sha='+encodeURIComponent(r.branch));
+      const c=commits[0];
+      if(c)items.push({kind:'github',id:c.sha,repository:r.name,name:r.name,branch:r.branch,sha:c.sha.slice(0,7),message:c.commit.message.split('\n')[0],at:Date.parse(c.commit.committer.date),url:c.html_url,status:'Commit'});
+     }catch(e:any){if(e?.message==='HTTP 409'||e?.message==='HTTP 404')continue;throw e;}
+    }
+    items=[...new Map(items.map((x:any)=>[x.repository+':'+x.id,x])).values()].sort((a:any,b:any)=>b.at-a.at).slice(0,100);
    }else{
     const optional=async(url:string,fallback:any)=>{try{return await read(url);}catch(e:any){if(e.message==='HTTP 403')return fallback;throw e;}};
     const teams=await optional('https://api.vercel.com/v2/teams?limit=100',{teams:[]});
