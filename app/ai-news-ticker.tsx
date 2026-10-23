@@ -32,7 +32,7 @@ export default function AiNewsTicker() {
   return <section className="ai-news" aria-label="Актуални AI технологични новини на български">
     <div className="ai-news-heading"><Radio size={14} aria-hidden="true" /><span>AI НОВИНИ</span><span className="ai-news-live">BG · 8 ИЗТОЧНИКА</span></div>
     <div className="ai-news-viewport">
-      {items.length ? <div className="ai-news-track">
+      {items.length ? <div className="ai-news-track" style={{ animationDuration: `${Math.max(300, items.reduce((total, item) => total + item.title.length + item.source.length + 12, 0) * 0.55)}s` }}>
         {[0, 1].map(copy => <div className="ai-news-group" key={copy} aria-hidden={copy === 1}>
           {items.map((item, index) => <a key={item.url + index} href={item.url} target="_blank" rel="noopener noreferrer" tabIndex={copy === 1 ? -1 : 0} title={item.title}>
             <span className="ai-news-source">{item.source}</span><span>{item.title}</span><ExternalLink size={12} aria-hidden="true" />
