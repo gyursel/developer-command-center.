@@ -8,6 +8,11 @@ async function recordStats(siteId:string,result:any){
  const status=result.status;
  const next={samples:(current?.samples||0)+1,start:current?.start||result.at,available:(current?.available||0)+(status==='Online'||status==='Warning'?1:0),measured:(current?.measured||0)+(status!=='Unknown'?1:0)};
  await put(key,next);
+ const historyKey='checkHistory:'+siteId;
+ let history=await get<any[]|null>(historyKey,null);
+ if(!history){const rows=await db().prepare('SELECT value FROM checks WHERE site_id=? ORDER BY at DESC LIMIT 60').bind(siteId).all<any>();history=rows.results.map((r:any)=>JSON.parse(r.value));}
+ else history=[result,...history].slice(0,60);
+ await put(historyKey,history);
 }
 async function maintainStats(sites:any[]){
  // One bounded historical reconciliation per day, after history retention is applied.
