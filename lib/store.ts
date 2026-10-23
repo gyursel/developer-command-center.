@@ -15,8 +15,9 @@ export async function incident(key:string, active:boolean,level='Notice',title='
 export async function snapshot(){
  // Read-only: seeding and incident reconciliation belong to the scheduled collector.
  const sites=await get('sites',initialSites), settings=await get('settings',initialSettings);
- const summaries=await db().prepare("SELECT site_id,count(*) as samples,min(at) as start,sum(CASE WHEN json_extract(value,'$.status') IN ('Online','Warning') THEN 1 ELSE 0 END) as available,sum(CASE WHEN json_extract(value,'$.status') != 'Unknown' THEN 1 ELSE 0 END) as measured FROM checks GROUP BY site_id").all<any>();
- const stats=new Map(summaries.results.map((r:any)=>[r.site_id,r]));
+ // The collector maintains compact per-site aggregates. Never scan all checks in a 5-second dashboard poll.
+ const summaryRows=await Promise.all(sites.map(async(s:any)=>[s.id,await get<any>('checkStats:'+s.id,null)] as const));
+ const stats=new Map(summaryRows);
  const histories=await Promise.all(sites.map(async(s:any)=>{const rows=await db().prepare('SELECT value FROM checks WHERE site_id=? ORDER BY at DESC LIMIT 60').bind(s.id).all<any>();return [s.id,rows.results.map((r:any)=>JSON.parse(r.value))] as const;}));
  const by=new Map(histories);
  const integrations=await get('integrations',{});
