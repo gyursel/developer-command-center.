@@ -28,12 +28,32 @@ export default function Dashboard(){
  const drag=useRef<string|null>(null),seen=useRef<Set<string>|null>(null),resize=useRef<any>(null);
  const notify=useCallback((s:string)=>{setToast(s);setTimeout(()=>setToast(''),4500);},[]);
  const load=useCallback(async()=>{if(authBlocked.current||loading.current)return;loading.current=true;try{const r=await apiFetch('/api/state');if(!r.ok)throw new Error(r.status===401?'Сесията е изтекла. Влез отново.':r.status===503?'Сървърът временно не може да зареди данните (503). Опитай отново.':`Не успяхме да заредим данните (HTTP ${r.status}).`);const d:any=await r.json();const items:any[]=Object.values(d.integrations||{}).flatMap((x:any)=>x?.items||[]);
- const current=new Set(items.filter(x=>x.kind==='github'||x.kind==='vercel').map(x=>x.kind+':'+x.id+(x.kind==='vercel'?':'+x.status:'')));
+ const integrationItems=items.filter(x=>x.kind==='github'||x.kind==='vercel');
+ const keyOf=(x:any)=>x.kind+':'+x.id+(x.kind==='vercel'?':'+x.status:'');
+ const current=new Set<string>(integrationItems.map(keyOf));
+ // Persist a lightweight baseline in this tab so reloads do not silently discard updates.
+ if(activityKnown.current===null){
+  try{
+   const stored=sessionStorage.getItem('dcc:activity-known:v2');
+   if(stored)activityKnown.current=new Set<string>(JSON.parse(stored));
+  }catch{/* Session storage is optional. */}
+ }
  if(activityKnown.current){
-  const fresh=items.filter(x=>(x.kind==='github'||x.kind==='vercel')&&!activityKnown.current!.has(x.kind+':'+x.id+(x.kind==='vercel'?':'+x.status:'')));
-  if(fresh.length){setNewActivity(fresh.slice(0,6).map(x=>({...x,observedAt:Date.now()})));setFlashUntil(Date.now()+20000);}
+  const fresh=integrationItems.filter(x=>!activityKnown.current!.has(keyOf(x)));
+  const newest=[...fresh.filter(x=>x.kind==='github').slice(0,2),...fresh.filter(x=>x.kind==='vercel').slice(0,2)];
+  if(newest.length){
+   const detectedAt=Date.now();
+   setNewActivity(newest.map(x=>({...x,observedAt:detectedAt})));
+   setFlashUntil(detectedAt+20000);
+   const gh=newest.filter(x=>x.kind==='github').length,vc=newest.filter(x=>x.kind==='vercel').length;
+   notify([gh&&gh+' нови GitHub commits',vc&&vc+' нови Vercel deployments'].filter(Boolean).join(' · '));
+   if('Notification' in window&&Notification.permission==='granted'){
+    new Notification('DCC · Нови обновления',{body:[gh&&gh+' GitHub',vc&&vc+' Vercel'].filter(Boolean).join(' · '),tag:'dcc-updates'});
+   }
+  }
  }
  activityKnown.current=current;
+ try{sessionStorage.setItem('dcc:activity-known:v2',JSON.stringify([...current]));}catch{/* Optional. */}
  setData(d);setError('');setAuthRequired(false);const active=d.alerts.filter((a:any)=>!a.dismissed&&!a.resolved&&!a.read&&a.muted<Date.now());if(seen.current){for(const a of active)if(!seen.current.has(a.id)){setFlashUntil(Date.now()+20000);notify(a.title);if('Notification' in window&&Notification.permission==='granted')new Notification(a.title,{body:a.detail,tag:a.key});}}seen.current=new Set(d.alerts.map((a:any)=>a.id));}catch(e:any){if(e instanceof SessionExpiredError)expireSession();else setError(e.message||'Връзката е прекъсната.');}finally{loading.current=false;}},[notify,expireSession]);
  useEffect(()=>{load();const id=setInterval(()=>{setNow(Date.now());if(!document.hidden)load();},5000);const resume=()=>{if(!document.hidden)load();};window.addEventListener('focus',resume);window.addEventListener('online',resume);document.addEventListener('visibilitychange',resume);const expired=()=>expireSession();window.addEventListener('dcc:session-expired',expired);return()=>{clearInterval(id);window.removeEventListener('focus',resume);window.removeEventListener('online',resume);document.removeEventListener('visibilitychange',resume);window.removeEventListener('dcc:session-expired',expired);};},[load,expireSession]);
  async function mutate(type:string,value:any,extra:any={}){setSaving(true);try{const r=await apiFetch('/api/mutate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,value,...extra})});const d:any=await r.json();if(!r.ok)throw new Error(d.error);await load();return true;}catch(e:any){notify(e.message);return false;}finally{setSaving(false);}}
