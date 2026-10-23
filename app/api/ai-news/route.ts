@@ -29,7 +29,7 @@ async function fetchSource(source: string, domain: string): Promise<News[]> {
         const title = valueOf(item, 'title').replace(/\\s+-\\s+[^-]+$/, '').trim();
         const link = valueOf(item, 'link');
         return { title, url: link, source, published: valueOf(item, 'pubDate') };
-      }).filter(item => item.title && keywords.test(item.title) && /^https:\\/\\/[^\\s]+$/.test(item.url));
+      }).filter(item => item.title && (feedUrl === direct || keywords.test(item.title)) && /^https:\\/\\/[^\\s]+$/.test(item.url));
       if (found.length) return found;
     } catch { /* Try next available feed. */ }
   }
