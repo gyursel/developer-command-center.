@@ -18,7 +18,7 @@ export async function snapshot(){
  // The collector maintains compact per-site aggregates. Never scan all checks in a 5-second dashboard poll.
  const summaryRows=await Promise.all(sites.map(async(s:any)=>[s.id,await get<any>('checkStats:'+s.id,null)] as const));
  const stats=new Map(summaryRows);
- const histories=await Promise.all(sites.map(async(s:any)=>{const rows=await db().prepare('SELECT value FROM checks WHERE site_id=? ORDER BY at DESC LIMIT 60').bind(s.id).all<any>();return [s.id,rows.results.map((r:any)=>JSON.parse(r.value))] as const;}));
+ const histories=await Promise.all(sites.map(async(s:any)=>{const cached=await get<any[]|null>('checkHistory:'+s.id,null);if(cached)return [s.id,cached] as const;const rows=await db().prepare('SELECT value FROM checks WHERE site_id=? ORDER BY at DESC LIMIT 60').bind(s.id).all<any>();return [s.id,rows.results.map((r:any)=>JSON.parse(r.value))] as const;}));
  const by=new Map(histories);
  const integrations=await get('integrations',{});
  // Staleness is evaluated independently of collection; a stalled collector cannot hide it.
