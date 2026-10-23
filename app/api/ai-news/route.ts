@@ -24,12 +24,12 @@ async function fetchSource(source: string, domain: string): Promise<News[]> {
       const response = await fetch(feedUrl, { signal: AbortSignal.timeout(7000), headers: { Accept: 'application/rss+xml, application/xml, text/xml' }, next: { revalidate: 300 } });
       if (!response.ok) continue;
       const xml = await response.text();
-      const found = [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].slice(0, 35).map(match => {
+      const found = [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].slice(0, 35).map(match => {
         const item = match[1];
-        const title = valueOf(item, 'title').replace(/\\s+-\\s+[^-]+$/, '').trim();
+        const title = valueOf(item, 'title').replace(/\s+-\s+[^-]+$/, '').trim();
         const link = valueOf(item, 'link');
         return { title, url: link, source, published: valueOf(item, 'pubDate') };
-      }).filter(item => item.title && (feedUrl === direct || keywords.test(item.title)) && /^https:\\/\\/[^\\s]+$/.test(item.url));
+      }).filter(item => item.title && (feedUrl === direct || keywords.test(item.title)) && /^https:\/\/[^\s]+$/.test(item.url));
       if (found.length) return found;
     } catch { /* Try next available feed. */ }
   }
